@@ -1,7 +1,7 @@
 from app.schemas.users import UserLogin
 from app.utils.security import verify_password
 from app.settings import get_settings
-from app.db_manager import users as db_manager_user
+from app.services import users as db_manager_user
 
 from fastapi import (
     HTTPException,

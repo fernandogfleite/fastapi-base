@@ -9,7 +9,7 @@ from app.schemas.users import (
     UserOut,
     UserIn
 )
-from app.db_manager import users as db_manager_user
+from app.services import users as db_manager_user
 
 from fastapi import (
     APIRouter,
