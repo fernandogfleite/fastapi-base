@@ -23,7 +23,7 @@ async def shutdown():
     await database.disconnect()
 
 
-@app.get("/")
+@app.get("/", tags=["Index"])
 async def index():
     return {"message": "Hello World"}
 
