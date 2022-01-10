@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 import databases
 
 settings = get_settings()
-DATABASE_URL = settings.DB_URL
+DATABASE_URL = settings.DB_TEST_URL if settings.TESTING else settings.DB_URL
 
 database = databases.Database(DATABASE_URL)
 

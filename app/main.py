@@ -1,31 +1,22 @@
 from fastapi import FastAPI
-
-from app.db import (
-    engine,
-    Base,
-    database
-)
 from app.routers.users import users
+from app.core import tasks
 
 
-Base.metadata.create_all(engine)
+def create_application():
+    app = FastAPI()
 
-app = FastAPI()
+    app.add_event_handler("startup", tasks.create_start_app_handler(app))
+    app.add_event_handler("shutdown", tasks.create_stop_app_handler(app))
+
+    app.include_router(users)
+
+    return app
 
 
-@app.on_event("startup")
-async def startup():
-    await database.connect()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await database.disconnect()
+app = create_application()
 
 
 @app.get("/", tags=["Index"])
 async def index():
     return {"message": "Hello World"}
-
-
-app.include_router(users)
