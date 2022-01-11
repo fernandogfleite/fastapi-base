@@ -6,8 +6,13 @@ services:
     volumes:
       - ./app/:/app/
     command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
-    env_file:
-      - ./.env
+    environment:
+      - TESTING=${TESTING}
+      - DB_URL=${DB_URL}
+      - DB_TEST_URL=${DB_TEST_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
     ports:
       - 8000:8000
     depends_on:
@@ -15,11 +20,13 @@ services:
       - db_test
   db:
     image: postgres:14-alpine
-    env_file:
-      - ./.env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   db_test:
     image: postgres:14-alpine
     environment:
-      - POSTGRES_DB=fastapibase_test
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=testdatabase
+      - POSTGRES_DB=${POSTGRES_TEST_DB}
+      - POSTGRES_USER=${POSTGRES_TEST_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_TEST_PASSWORD}

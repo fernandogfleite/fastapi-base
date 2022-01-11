@@ -1,0 +1,13 @@
+image: python:3.10.1
+
+stages:
+  - test
+
+before_script:
+  - python --version  # For debugging
+  - pip install docker-compose
+
+test:
+  script:
+    - docker-compose run app sh -c "TESTING=True pytest app && flake8 app"
+
