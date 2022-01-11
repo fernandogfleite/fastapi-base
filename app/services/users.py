@@ -25,7 +25,11 @@ async def create_user(user: UserIn):
     data = user.dict()
     password = data.pop('password')
     hashed_password = get_password_hash(password)
-    query = users.insert().values(**data, password=hashed_password, is_active=True)
+    query = users.insert().values(
+        **data,
+        password=hashed_password,
+        is_active=True
+    )
 
     user_id = await database.execute(query=query)
 

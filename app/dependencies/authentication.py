@@ -49,7 +49,10 @@ def sign_jwt(email: str) -> Dict[str, str]:
 def decode_jwt(token: str) -> dict:
     try:
         decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return decoded_token if decoded_token["expires"] >= time.time() else None
+        if decoded_token["expires"] >= time.time():
+            return decoded_token
+
+        return None
 
     except Exception:
         return {}
@@ -69,7 +72,8 @@ class JWTBearer(HTTPBearer):
         super(JWTBearer, self).__init__(auto_error=auto_error)
 
     async def __call__(self, request: Request):
-        credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
+        credentials: HTTPAuthorizationCredentials = await super(
+            JWTBearer, self).__call__(request)
         if credentials:
             if not credentials.scheme == "Bearer":
                 raise HTTPException(

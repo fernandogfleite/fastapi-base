@@ -7,6 +7,7 @@ import databases
 
 settings = get_settings()
 DATABASE_URL = settings.DB_TEST_URL if settings.TESTING else settings.DB_URL
+print(DATABASE_URL)
 
 database = databases.Database(DATABASE_URL)
 

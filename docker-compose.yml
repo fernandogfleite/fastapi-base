@@ -1,0 +1,25 @@
+version: '3.10'
+services:
+  server:
+    build:
+      context: .
+    volumes:
+      - ./app/:/app/
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    env_file:
+      - ./.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+      - db_test
+  db:
+    image: postgres:14-alpine
+    env_file:
+      - ./.env
+  db_test:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_DB=fastapibase_test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=testdatabase
