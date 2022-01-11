@@ -21,7 +21,7 @@ jobs:
           name: Running tests
           command: |
             . venv/bin/activate
-            docker-compose run app sh -c "TESTING=True pytest app && flake8 app
+            docker-compose run server sh -c "TESTING=True pytest app && flake8 app"
             
       - store_artifacts:
           path: test-reports/
